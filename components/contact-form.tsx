@@ -1,3 +1,5 @@
+"use client"
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -18,16 +20,20 @@ import { Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react"
 import emailjs from "@emailjs/browser"
 
 const formSchema = z.object({
-    name: z.string().min(2, {
-        message: "Name must be at least 2 characters.",
+    name: z.string().min(1, {
+        message: "Name is required.",
     }),
-    email: z.string().email({
+    email: z.string().min(1, {
+        message: "Email is required.",
+    }).email({
         message: "Please enter a valid email address.",
     }),
-    title: z.string().min(2, {
-        message: "Title must be at least 2 characters.",
+    title: z.string().min(1, {
+        message: "Title is required.",
     }),
-    message: z.string().min(10, {
+    message: z.string().min(1, {
+        message: "Message is required.",
+    }).min(10, {
         message: "Message must be at least 10 characters.",
     }),
 })
@@ -40,6 +46,7 @@ interface ContactFormProps {
 export function ContactForm({ onTypingChange, onSubmitSuccess }: ContactFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+    const [errorMessage, setErrorMessage] = useState("")
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -63,28 +70,32 @@ export function ContactForm({ onTypingChange, onSubmitSuccess }: ContactFormProp
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true)
         setSubmitStatus("idle")
+        setErrorMessage("")
+
+        console.log("Service:", process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+        console.log("Template:", process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID);
+        console.log("PublicKey:", process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 
         try {
-            const templateParams = {
-                name: values.name,
-                email: values.email,
-                title: values.title,
-                message: values.message,
-            }
-
             await emailjs.send(
-                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "",
-                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "",
-                templateParams,
-                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ""
-            )
+                process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+                process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
+                {
+                    name: values.name,
+                    email: values.email,
+                    title: values.title,
+                    message: values.message,
+                },
+                process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY!
+            );
 
             setSubmitStatus("success")
             if (onSubmitSuccess) onSubmitSuccess()
             form.reset()
-        } catch (error) {
-            console.error("EmailJS Error:", error)
+        } catch (error: any) {
+            console.log("EmailJS Full Error:", error)
             setSubmitStatus("error")
+            setErrorMessage(error?.text || error?.message || "An unexpected error occurred.")
         } finally {
             setIsSubmitting(false)
         }
@@ -195,10 +206,22 @@ export function ContactForm({ onTypingChange, onSubmitSuccess }: ContactFormProp
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                className="flex items-center justify-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 font-bold text-sm"
+                                className="flex flex-col items-center justify-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 font-bold text-sm text-center"
                             >
-                                <AlertCircle size={18} />
-                                Failed to send. Please check your credentials.
+                                <div className="flex items-center gap-2">
+                                    <AlertCircle size={18} />
+                                    Failed to send.
+                                </div>
+                                <span className="text-[10px] opacity-80 font-medium">{errorMessage}</span>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setSubmitStatus("idle")}
+                                    className="mt-2 h-7 text-[10px] hover:bg-red-500/20 text-red-500"
+                                >
+                                    Try Again
+                                </Button>
                             </motion.div>
                         ) : (
                             <motion.div
@@ -209,10 +232,13 @@ export function ContactForm({ onTypingChange, onSubmitSuccess }: ContactFormProp
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full h-12 bg-gradient-to-r from-[#00A8E1] to-purple-600 hover:from-[#00A8E1] hover:to-purple-500 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-[#00A8E1]/20 border-none group"
+                                    className="w-full h-12 bg-gradient-to-r from-[#00A8E1] to-purple-600 hover:from-[#00A8E1] hover:to-purple-500 text-white font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-[#00A8E1]/20 border-none group disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     {isSubmitting ? (
-                                        <Loader2 className="animate-spin w-5 h-5" />
+                                        <div className="flex items-center gap-2">
+                                            <Loader2 className="animate-spin w-5 h-5" />
+                                            <span>Sending...</span>
+                                        </div>
                                     ) : (
                                         <div className="flex items-center gap-2">
                                             Send Message
