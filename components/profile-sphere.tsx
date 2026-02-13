@@ -4,25 +4,25 @@ import { useRef, useState } from "react"
 import { useFrame, useLoader } from "@react-three/fiber"
 import { TextureLoader } from "three"
 import * as THREE from "three"
-import { useRecruiterMode } from "@/context/recruiter-mode"
+
 
 export function ProfileSphere() {
     const meshRef = useRef<THREE.Mesh>(null!)
     const [hovered, setHovered] = useState(false)
-    const { isRecruiterMode } = useRecruiterMode()
+
 
     // Load profile texture - REPLACE with actual image path
     // For now using a placeholder color/texture
     // const texture = useLoader(TextureLoader, '/path/to/profile.jpg')
 
     useFrame((state, delta) => {
-        if (meshRef.current && !isRecruiterMode) {
+        if (meshRef.current) {
             meshRef.current.rotation.y += delta * 0.5
             meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime) * 0.1
         }
     })
 
-    if (isRecruiterMode) return null
+
 
     return (
         <mesh

@@ -6,15 +6,11 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Home, User, FolderGit2, Wrench, Briefcase, Mail, Terminal, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useRecruiterMode } from "@/context/recruiter-mode"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = React.useState(false)
     const pathname = usePathname()
-    const { isRecruiterMode, toggleRecruiterMode } = useRecruiterMode()
 
     const routes = [
         { href: "/", label: "Home", icon: Home },
@@ -93,15 +89,7 @@ export function Sidebar() {
                                     })}
                                 </div>
 
-                                <div className="h-px bg-white/10 my-4" />
 
-                                <div className="flex items-center justify-between px-4 py-3 rounded-md bg-white/5">
-                                    <div className="flex items-center gap-2">
-                                        <Settings className="h-4 w-4 text-gray-400" />
-                                        <Label htmlFor="recruiter-mode" className="text-sm font-medium text-gray-300">Recruiter Mode</Label>
-                                    </div>
-                                    <Switch id="recruiter-mode" checked={isRecruiterMode} onCheckedChange={toggleRecruiterMode} />
-                                </div>
                             </div>
                         </motion.div>
                     </>

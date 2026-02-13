@@ -3,7 +3,7 @@
 import { experience } from "@/config/experience"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Section } from "@/components/section"
-import { useRecruiterMode } from "@/context/recruiter-mode"
+
 import { motion, AnimatePresence } from "framer-motion"
 import { Briefcase } from "lucide-react"
 
