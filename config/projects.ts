@@ -9,22 +9,23 @@ export type Project = {
 
 export const projects: Project[] = [
     {
-        title: "Portfolio Website",
-        description: "My personal developer portfolio built with Next.js and Tailwind CSS.",
-        techStack: ["Next.js", "Tailwind CSS", "TypeScript", "shadcn/ui"],
-        github: "https://github.com/its-Sittu/portfolio",
-        demo: "https://its-sittu.vercel.app",
+        title: "AI-Powered BRD Generator",
+        description: "Built an AI-driven system that converts unstructured requirements into structured documentation. Designed a secure backend validation pipeline and REST APIs.",
+        techStack: ["React", "FastAPI", "Python"],
+        image: "/projects/brd-generator.png",
+        demo: "https://formulatebrd-production.up.railway.app/",
     },
     {
-        title: "E-commerce Platform",
-        description: "A full-featured e-commerce platform with cart and checkout functionality.",
-        techStack: ["React", "Node.js", "MongoDB", "Redux"],
-        github: "https://github.com/its-Sittu/ecommerce",
+        title: "PhishGuard",
+        description: "Developed a real-time malicious URL detection backend with secure API handling.",
+        techStack: ["Python", "Flask"],
+        image: "/projects/phishguard.png",
+        demo: "https://phishguard-e38r.onrender.com/",
     },
     {
-        title: "Task Management App",
-        description: "A collaborative task management tool with real-time updates.",
-        techStack: ["Vue.js", "Firebase", "Tailwind CSS"],
-        demo: "https://task-app.com",
+        title: "Movie Motion Shot",
+        description: "Implemented authentication, product management, and cart functionality. Integrated Redux Toolkit for structured state management.",
+        techStack: ["MERN Stack"],
+        image: "/projects/movie-platform.png",
     },
 ]

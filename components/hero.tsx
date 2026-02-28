@@ -74,7 +74,10 @@ export function Hero() {
 
             {/* 3D Earth Background */}
             <div className="absolute right-0 top-4 h-full w-full md:w-2/3 lg:w-1/2 opacity-70 mix-blend-screen overflow-hidden">
-                <Canvas>
+                <Canvas
+                    dpr={[1, 2]}
+                    gl={{ powerPreference: "high-performance" }}
+                >
                     <ambientLight intensity={0.5} />
                     <pointLight position={[10, 10, 10]} intensity={1.5} />
                     <Earth />

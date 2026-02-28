@@ -70,29 +70,31 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
             {/* Bottom: Content Area */}
             <div className="relative flex-1 w-full p-6 flex flex-col justify-between bg-[#0a0a0a] z-20 rounded-b-[20px]">
-                <div className="space-y-1">
-                    <h3 className="text-xl font-black text-white tracking-tight group-hover:text-[#00A8E1] transition-colors duration-300">
-                        {project.title}
-                    </h3>
-                    <p className="line-clamp-2 text-sm text-gray-400 font-semibold group-hover:text-gray-300 transition-colors duration-300">
+                <div className="flex flex-col gap-3 relative z-20">
+                    <div className="flex justify-between items-start gap-4">
+                        <Link href={project.demo || project.github || "#"} target={project.demo || project.github ? "_blank" : "_self"} rel="noreferrer" className="block flex-1 z-10 pr-2">
+                            <h3 className="text-xl font-black text-white tracking-tight hover:text-[#00A8E1] transition-colors duration-300">
+                                {project.title}
+                            </h3>
+                        </Link>
+                        <div className="flex flex-wrap justify-end gap-1.5 shrink-0 transform group-hover:-translate-y-1 transition-transform duration-500 mt-1 max-w-[45%]">
+                            {project.techStack.map((tech) => (
+                                <span
+                                    key={tech}
+                                    className="px-2.5 py-0.5 rounded-full border border-white/10 bg-white/5 text-[10px] font-black text-gray-400 uppercase tracking-widest hover:border-[#00A8E1]/40 hover:text-[#00A8E1] transition-all text-right whitespace-nowrap"
+                                >
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                    <p className="line-clamp-3 text-sm text-gray-400 font-semibold group-hover:text-gray-300 transition-colors duration-300">
                         {project.description}
                     </p>
                 </div>
 
                 {/* Interactive Layer (Tags & Buttons) */}
-                <div className="space-y-4">
-                    {/* Tech Tags - Animated Upward */}
-                    <div className="flex flex-wrap gap-1.5 transform group-hover:-translate-y-1 transition-transform duration-500">
-                        {project.techStack.slice(0, 3).map((tech) => (
-                            <span
-                                key={tech}
-                                className="px-2.5 py-0.5 rounded-full border border-white/10 bg-white/5 text-[10px] font-black text-gray-400 uppercase tracking-widest hover:border-[#00A8E1]/40 hover:text-[#00A8E1] transition-all"
-                            >
-                                {tech}
-                            </span>
-                        ))}
-                    </div>
-
+                <div className="space-y-4 mt-4">
                     {/* Action Bar */}
                     <div className="flex gap-3">
                         {project.demo && (

@@ -1,4 +1,15 @@
-export const skillCategories = [
+export interface Skill {
+    name: string;
+    icon: string;
+}
+
+export interface SkillCategory {
+    title: string;
+    color: string;
+    skills: Skill[];
+}
+
+export const skillCategories: SkillCategory[] = [
     {
         title: "Frontend",
         color: "#00E5FF", // Cyan accent

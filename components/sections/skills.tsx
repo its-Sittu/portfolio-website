@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { Section } from "@/components/section"
-import { skillCategories } from "@/config/skills"
+import { skillCategories, type Skill, type SkillCategory } from "@/config/skills"
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion"
 import {
     Code2,
@@ -46,7 +46,7 @@ const iconMap: Record<string, any> = {
     firebase: Flame
 }
 
-function SkillCapsule({ skill, categoryColor }: { skill: any, categoryColor: string }) {
+function SkillCapsule({ skill, categoryColor }: { skill: Skill, categoryColor: string }) {
     const Icon = iconMap[skill.icon] || Code2
 
     return (
@@ -86,7 +86,7 @@ function SkillCapsule({ skill, categoryColor }: { skill: any, categoryColor: str
     )
 }
 
-function TechCard({ category, idx }: { category: any, idx: number }) {
+function TechCard({ category, idx }: { category: SkillCategory, idx: number }) {
     const x = useMotionValue(0)
     const y = useMotionValue(0)
 
@@ -174,14 +174,14 @@ export function SkillsSection() {
                             scale: [0, 1, 0]
                         }}
                         transition={{
-                            duration: Math.random() * 10 + 10,
+                            duration: 10 + (i % 5) * 2,
                             repeat: Infinity,
-                            delay: Math.random() * 10
+                            delay: (i % 10)
                         }}
                         className="absolute w-1 h-1 bg-white rounded-full"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`
+                            left: `${(i * 7) % 100}%`,
+                            top: `${(i * 13) % 100}%`
                         }}
                     />
                 ))}

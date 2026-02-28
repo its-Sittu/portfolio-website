@@ -98,11 +98,13 @@ export function Earth() {
         }
     })
 
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768
+
     return (
         <group position={[0, -0.2, 0]}>
             {/* Main Earth */}
             <mesh ref={meshRef} scale={2}>
-                <sphereGeometry args={[1, 64, 64]} />
+                <sphereGeometry args={[1, isMobile ? 32 : 64, isMobile ? 32 : 64]} />
                 <meshStandardMaterial
                     color="#00A8E1"
                     emissive="#00A8E1"
